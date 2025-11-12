@@ -69,6 +69,9 @@ function initBiofoulingPlanGenerator(container) {
 
     setupDynamicSection('#add-afc', '#afc-container', '.afc-item', 'afc', updateAfcIds);
     setupDynamicSection('#add-mgps', '#mgps-container', '.mgps-item', 'mgps', updateMgpsIds);
+    
+    // Populate example text in fields
+    populateExampleText();
 
     if (disablePdfDownload && generateButton) {
         generateButton.style.display = 'none';
@@ -128,6 +131,60 @@ function initBiofoulingPlanGenerator(container) {
     });
 
     activateTab(tabButtons[0]?.dataset.tab || 'vessel-details');
+}
+
+function populateExampleText() {
+    const examples = {
+        'tradingRoutes': "Primary operations in Australian territorial waters, ports including [EDIT: Sydney, Melbourne, Brisbane, Darwin, Perth]. Occasional transits to New Zealand and Pacific Island nations. Regular patrol areas include [EDIT: Bass Strait, Great Barrier Reef, Timor Sea].",
+        'climateZones': "Tropical waters (northern Australia, Pacific Islands), temperate waters (southern Australia, New Zealand). Water temperatures ranging from [EDIT: 15°C to 30°C] seasonally.",
+        'layupProcedures': "For idle periods exceeding 30 days, MGPS to be operated daily for minimum [EDIT: 2 hours]. Underwater inspection to be conducted prior to extended layup and within 7 days of resuming operations. Consider in-water cleaning if idle period exceeds [EDIT: 60 days] in tropical waters or [EDIT: 90 days] in temperate waters.",
+        'speedRestrictions': "Vessel operates at reduced speeds during patrol operations (typically [EDIT: 6-12 knots]). Dynamic positioning operations conducted during [EDIT: border protection, rescue operations]. Extended periods at anchor in [EDIT: specific location]. Slow steaming practiced for fuel efficiency on long transits.",
+        'nicheAreaDescription': "Sea chests: [EDIT: Two main engine cooling water sea chests, dimensions approximately 1.2m x 0.8m, protected by bronze gratings]. Bow thruster: [EDIT: Single tunnel thruster, 1.5m diameter, 8m length]. Gratings: [EDIT: Sea chest gratings bronze, approximate area 1.5 m²]. Propellers: [EDIT: Twin controllable pitch propellers, 5-blade, 3.2m diameter]. Rudders: [EDIT: Semi-balanced rudders with stock, approximate area 12 m²]. All major niche areas accessible during drydocking. Internal surfaces of sea chests and thruster tunnels accessible for inspection in water.",
+        'unprotectedAreas': "Propeller blades (bare bronze, polished during drydock). Shaft struts and brackets (limited coating application due to geometry). Internal surfaces of thruster tunnels (difficult access, partial coating coverage). Transducer faces (uncoated as per manufacturer requirements). Anode surfaces (uncoated by design). Rudder pintle bearings (uncoated operational surfaces).",
+        'internalSystemsDescription': "Main engine cooling: [EDIT: Two independent circuits, approximately 150m total piping length, protected by MGPS]. Auxiliary cooling: [EDIT: Single circuit, 80m piping, MGPS protected]. Fire fighting: [EDIT: Ring main system, 200m piping, no MGPS]. HVAC: [EDIT: Three separate systems, 120m total piping, MGPS protected]. All systems have primary filtration at sea chest entry. MGPS provides coverage for critical cooling systems. Fire main not protected due to operational requirements.",
+        'afcLocations1': "Applied to flat bottom, vertical sides, bow and stern sections. Boot-top area with separate tie coat. Not applied to propellers, shaft brackets, or transducer faces. Niche areas including sea chest gratings, rudder surfaces, and thruster tunnel entries (different product/specification as needed).",
+        'afcSuitableProfile1': "Designed for vessels operating at speeds of [EDIT: 10-25 knots]. Suitable for tropical and temperate waters. Effective with idle periods up to [EDIT: 30 days]. Performance optimized for continuous operation with minimal stationary periods. Compatible with MGPS systems.",
+        'afcMaintenance1': "Visual inspection during each underwater hull inspection. Touch-up repairs using approved products as required for damage areas. Light mechanical cleaning (soft brush/sponge) acceptable if biofouling accumulation observed. Recoating interval: [EDIT: 60 months] or at next scheduled drydocking. Maintain coating manufacturer contact for technical support.",
+        'afcSpecialConsiderations1': "Application requires surface preparation to SA 2.5 standard. Minimum surface temperature [EDIT: 10°C], maximum relative humidity [EDIT: 85%] during application. Not suitable for in-water cleaning using high-pressure systems. Compatible with cathodic protection systems. SDS available onboard and with shore management.",
+        'mgpsLocations1': "System installed in [EDIT: port and starboard sea chests]. Protects main engine cooling system, auxiliary engine cooling, and HVAC seawater circuits. Copper anodes installed at sea chest inlet. Control panels located in [EDIT: engine room, port and starboard sides]. System provides coverage for approximately [EDIT: 150m] of internal piping.",
+        'mgpsOperatingParameters1': "Operating voltage: [EDIT: 24V DC]. Current output: [EDIT: 0-10A adjustable]. Normal operating current: [EDIT: 6A]. Dosing rate: [EDIT: 20ppb copper ion concentration]. Runtime: Continuous operation when seawater systems in use. Anode consumption rate: approximately [EDIT: 2kg per 1000 hours operation]. System automatically adjusts based on flow rate and water temperature.",
+        'mgpsMaintenance1': "Daily: Check system operation, verify indicator lights showing green/normal. Weekly: Record anode current readings, check for alarms. Monthly: Inspect anode condition, check electrical connections, verify timer settings. Quarterly: Clean anode surfaces if required, test alarm functions. Annually: Replace anodes if consumed below [EDIT: 30%] original size. Anode replacement typically required every [EDIT: 12-18 months] depending on usage. Maintain log of all maintenance activities in MGPS record book.",
+        'inspectionDaily': "Check MGPS operation lights and current readings. Verify no MGPS alarms. Visual inspection of accessible deck drains and scuppers for marine growth. Record in ship's log. Responsibility: [EDIT: Engineering Officer of the Watch].",
+        'inspectionWeekly': "Detailed MGPS performance check including anode current readings and water flow verification. Visual inspection of sea chest gratings (if accessible). Check cooling water temperatures for signs of fouling. Record in MGPS log and Biofouling Record Book. Responsibility: [EDIT: Chief Engineer].",
+        'inspectionMonthly': "Inspection of internal seawater systems including sea chest chambers (if safe access available). Monitor cooling system pressures and temperatures for baseline comparisons. Review MGPS performance data. Inspect fire main strainers. Document findings in Biofouling Record Book. Responsibility: [EDIT: Chief Engineer].",
+        'inspectionQuarterly': "Detailed inspection of all accessible niche areas. Check floating equipment (fenders, mooring lines) for fouling. Inspect transom and stern areas from tender if conditions permit. Photograph any biofouling observed. Compare with previous inspection photos. Report findings to [EDIT: Fleet Manager]. Document in Biofouling Record Book.",
+        'inspectionAnnual': "Comprehensive underwater inspection (UWILD) or drydock inspection of all hull and niche areas. Full photographic survey of hull, propellers, rudders, thrusters, sea chests, gratings, and all underwater appendages. Assessment against biosecurity cleaning levels. Written report including recommendations for cleaning or maintenance. Update BFMP if significant changes to biofouling patterns observed.",
+        'inspectionPreArrival': "Prior to arrival in ports with strict biosecurity requirements (Australia, New Zealand, California), review vessel biofouling history. Confirm last inspection date and results. Verify MGPS operational throughout voyage. Check for any recent groundings or long periods at anchor. Complete MARS declaration (Australia) or MPI declaration (New Zealand) accurately. Have recent UWILD report and photos available if requested.",
+        'uwildProcedure': "UWILD conducted by qualified commercial divers with underwater photography/video equipment. Inspection covers: hull (100% coverage), propellers, rudders, sea chest gratings, thruster tunnels (entry areas), all underwater appendages. Biofouling assessed using [EDIT: DAFF/MPI] rating levels. Detailed photographic record maintained with date/location stamps. Written report provided within [EDIT: 48 hours] including recommendations for cleaning. Report includes comparison with previous inspections. All findings recorded in Biofouling Record Book.",
+        'uwildContractors': "[EDIT: Company Name], Contact: [EDIT: name, phone, email]. Services available in [EDIT: Sydney, Melbourne, Brisbane]. Alternative: [EDIT: Company Name 2], Contact: [EDIT: details]. Internal capability: Ship's diving team (if qualified and equipped for UWILD). All contractors must hold appropriate diving certifications and liability insurance.",
+        'cleaningHullSchedule': "Routine cleaning not required if biofouling remains at acceptable levels (slime layer only). Trigger for cleaning: UWILD report indicates biofouling rating above [EDIT: Level 2]. Extended idle period exceeding [EDIT: 60 days in tropical waters, 90 days in temperate]. Observed increase in fuel consumption exceeding [EDIT: 5%]. Prior to entry into high biosecurity risk ports. Cleaning conducted during drydock or by approved in-water contractor. Minimum 7 days between cleaning and arrival in biosecurity controlled port.",
+        'cleaningNicheSchedule': "Sea chest gratings: cleaned during each drydock, or in-water if heavy fouling observed. Thruster tunnels: inspected annually, cleaned if biofouling present. Propellers: polished during each drydock, light brushing acceptable in-water if required. Rudders: cleaned during drydock, in-water grooming if fouling observed. Transducers: cleaned as required to maintain performance. Anodes: not cleaned (sacrificial). All niche cleaning conducted by qualified personnel using approved soft brush/sponge methods to avoid coating damage.",
+        'cleaningInternalSchedule': "Sea chests: physical cleaning during drydock, internal surfaces accessible via manhole. Fire main: flushed quarterly with freshwater when alongside. Cooling systems: MGPS provides continuous protection, system flushing conducted if performance degradation observed. Strainers: cleaned weekly or as required. Annual backflushing of all seawater systems when in port. Chemical treatment only if approved by [EDIT: Chief Engineer/Fleet Manager].",
+        'cleaningMethods': "Approved methods: Soft brush/sponge (manual), grooming (light mechanical with soft pads), polishing (propellers only). NOT approved: High-pressure water blasting, abrasive pads, scrapers, mechanical rotating brushes on coated surfaces. Equipment: Soft bristle brushes, non-abrasive sponges, low-pressure washers (<1000 psi for rinsing only). Divers must be briefed on coating type and acceptable cleaning techniques. All cleaning must not damage anti-fouling coating. Waste capture required in environmentally sensitive areas.",
+        'riskParameters': "Extended port stays (>30 days). Operating in warm tropical waters (>25°C). Reduced speed operations (<10 knots for extended periods). MGPS failure or degraded performance. Extended idle periods at anchor. Operating in areas with high biofouling pressure. Freshwater exposure. Damage to anti-fouling coating. Increased fuel consumption indicating hull resistance. Rising cooling water temperatures indicating internal fouling. Failure to conduct scheduled inspections.",
+        'deviationLimits': "Port stay exceeding [EDIT: 45 days]. Idle at anchor exceeding [EDIT: 21 days]. MGPS offline for more than [EDIT: 7 days]. Fuel consumption increase >5% compared to baseline. Cooling water temperature increase >3°C above normal. Speed reduction >1 knot at same engine RPM. UWILD report indicating biofouling rating above Level 2. Missed scheduled inspection.",
+        'contingencyActions': "Immediate: Report deviation to [EDIT: Fleet Manager/Master]. Investigate cause. Review operational schedule. Short-term: Arrange UWILD inspection within [EDIT: 14 days]. Increase MGPS operating time if system available. Plan for in-water cleaning if biofouling confirmed. Adjust operational profile to reduce risk (increase speed, reduce idle time). Update biosecurity declarations. Medium-term: Conduct in-water cleaning if required. Arrange early drydock if significant fouling. Review and update BFMP procedures. Report to classification society if required.",
+        'longTermActions': "Review anti-fouling coating selection and performance. Consider alternative coating systems at next drydock. Upgrade or install additional MGPS capacity. Modify operational profile to reduce biofouling risk. Increase inspection frequency in high-risk operating areas. Revise BFMP based on lessons learned. Review contractor performance and selection. Consider hull performance monitoring systems. Update crew training program. Consult with coating manufacturers for technical support.",
+        'wasteManagement': "All biofouling material removed during cleaning to be captured and contained. Waste captured using collection devices, filter bags, or containment curtains during in-water cleaning. No discharge of biofouling waste into water. Collected waste stored in sealed containers marked 'Biofouling Waste - Biosecurity Risk'. Disposal in accordance with MARPOL Annex V and local port regulations. In Australia: waste treated as quarantine material, disposal approved by biosecurity officer. In NZ: disposal as per MPI requirements. Record all waste disposal in Biofouling Record Book and Garbage Record Book. Contact [EDIT: waste contractor name] for approved disposal.",
+        'wasteContainment': "Containment curtains deployed around cleaning area. Vacuum collection systems used for removal. Filter bags (50 micron mesh) fitted to vacuum outlets. Soft brushes and sponges used to minimize material dispersal. Containment verified before commencing cleaning. Floating debris booms deployed if required. All equipment inspected before and after use. Divers briefed on waste capture requirements. Work stopped if containment fails.",
+        'safetyProcedures': "Lockout/tagout: All shafts, propellers, thrusters, rudders isolated before in-water work. Lockout tags signed by [EDIT: Chief Engineer]. Confined space entry: Atmosphere tested, ventilation established, permits issued per ship's procedures. Minimum 2-person team. Diving operations: Dive plan prepared and approved. Safety diver on standby. Communication maintained throughout. Decompression tables available. Emergency oxygen ready. Chemical handling: SDS reviewed prior to use. Appropriate PPE worn. Spill containment available. Ventilation adequate. Permit-to-work: Required for all underwater work, confined space entry, and hot work near recent coating application.",
+        'safetyEquipment': "PPE: Gloves (chemical resistant), safety glasses, respirators (if required), protective coveralls, non-slip footwear. Confined space: Gas detector (O2, LEL, H2S, CO), ventilation fan, communication equipment, rescue harness and tripod. Diving: Full diving equipment per operation requirements, surface-supplied air preferred for extended work, emergency oxygen, first aid kit. Lockout devices: Padlocks, tags, chain/cable barriers. Signage: 'Divers Below' flags, caution signs. Emergency equipment: Fire extinguishers, spill kit, emergency contacts posted.",
+        'emergencyProcedures': "Medical emergency: Cease operations immediately. Administer first aid. Contact [EDIT: emergency services/medical facility]. Diving emergency: Execute emergency ascent procedures. Administer oxygen. Contact hyperbaric facility. Confined space emergency: Activate rescue team. Do not enter without proper equipment. Chemical exposure: Remove from exposure, decontaminate, refer to SDS, seek medical attention. Equipment failure: Cease operations, recover personnel safely, report to [EDIT: Master/Chief Engineer]. Contact numbers: Emergency [EDIT: 000], Port Control [EDIT: number], Company [EDIT: number].",
+        'crewTraining': "All crew involved in biofouling management activities to receive initial training on this BFMP within [EDIT: 1 month] of joining vessel. Training delivered by [EDIT: Chief Officer/external provider]. Personnel requiring training: [EDIT: Master, Chief Officer, Chief Engineer, Engineering Officers, relevant ratings]. Training includes review of this BFMP, biosecurity risks, inspection techniques, record keeping, and reporting procedures. Practical familiarization with MGPS operation and inspection locations. Training records maintained in vessel training matrix and Biofouling Record Book. Refresher training conducted [EDIT: annually] or when BFMP significantly revised.",
+        'trainingTopics': "Understanding biofouling and invasive aquatic species risks. IMO MEPC.207(62) guidelines overview. Australian, New Zealand, and California biosecurity requirements. Identification of biofouling (slime, weed, barnacles, mussels, etc.). Biofouling rating levels (DAFF/MPI standards). Inspection procedures and schedules. Operation and maintenance of MGPS. Hull coating inspection and damage identification. Record keeping in Biofouling Record Book. Biosecurity declaration procedures (MARS, MPI). Safety procedures for inspection and cleaning activities. Waste capture and disposal requirements. Emergency response procedures.",
+        'reportingProcedures': "All biofouling-related activities and observations to be recorded in Biofouling Record Book by [EDIT: Chief Officer]. Significant issues reported immediately to Master. Master notifies [EDIT: Fleet Manager] of: MGPS failures, significant biofouling observed, extended idle periods, coating damage, missed inspections, biosecurity concerns. Monthly summary report sent to [EDIT: Fleet Manager] including MGPS operation logs, inspection results, fuel consumption trends. Annual BFMP review conducted by [EDIT: Fleet Manager/Technical Superintendent]. Biofouling Record Book available for inspection by Port State Control, biosecurity authorities, and classification society.",
+        'externalReporting': "Australia: Complete MARS (Maritime Arrivals Reporting System) declaration at least 48 hours prior to arrival. Biofouling section must be accurate and complete. DAFF may request UWILD inspection or cleaning based on declaration. New Zealand: Complete MPI pre-arrival biosecurity import health standard declaration. Biofouling status must be declared. Vessel may be inspected on arrival. MPI may direct cleaning if non-compliant. California: Submit Marine Invasive Species Program Annual Vessel Reporting Form at least 24 hours prior to first arrival in calendar year. Contact details: DAFF Biosecurity [EDIT: contact], MPI [EDIT: contact], California MISP [EDIT: contact].",
+        'documentRetention': "BFMP and Biofouling Record Book maintained onboard vessel at all times. Records retained for vessel's operational life or minimum [EDIT: 5 years]. Digital backup copies maintained by [EDIT: Fleet Manager] at shore office. UWILD reports, photographs, and cleaning certificates filed with Biofouling Record Book. Training records maintained in vessel training matrix. All documentation available for inspection by authorities. Document storage location: [EDIT: Master's office, safe]. Backup location: [EDIT: company document management system].",
+        'keyContacts': "BFMP Coordinator (Onboard): [EDIT: Chief Officer, email, phone]. Fleet Manager: [EDIT: name, email, phone]. Technical Superintendent: [EDIT: name, email, phone]. UWILD Contractor: [EDIT: company, contact, phone]. Cleaning Contractor: [EDIT: company, contact, phone]. Coating Manufacturer Technical Support: [EDIT: contact details]. MGPS Manufacturer: [EDIT: contact details]. Classification Society: [EDIT: surveyor name, contact]. Emergency Contact: [EDIT: 24/7 number]. Regulatory Authorities: DAFF [EDIT: phone], MPI [EDIT: phone], Port Control [EDIT: number]."
+    };
+
+    // Populate all textarea and text input fields with example text
+    for (const [id, text] of Object.entries(examples)) {
+        const element = document.getElementById(id);
+        if (element && element.value === '') {
+            element.value = text;
+        }
+    }
 }
 
 function setupFileUploadPreview(inputId, previewId) {
@@ -274,14 +331,30 @@ function collectPlanData() {
         vessel: {
             name: getValue('vesselName'),
             imo: getValue('imoNumber'),
+            callSign: getValue('callSign'),
+            officialNumber: getValue('officialNumber'),
             constructionDate: getValue('constructionDate'),
+            portOfRegistry: getValue('portOfRegistry'),
             type: getValue('vesselType'),
+            vesselClass: getValue('vesselClass'),
             grossTonnage: getValue('grossTonnage'),
+            netTonnage: getValue('netTonnage'),
+            deadweight: getValue('deadweight'),
             beam: getValue('beam'),
             length: getValue('length'),
+            lengthBP: getValue('lengthBP'),
             maxDraft: getValue('maxDraft'),
             minDraft: getValue('minDraft'),
-            flag: getValue('flag')
+            flag: getValue('flag'),
+            classificationSociety: getValue('classificationSociety')
+        },
+        owner: {
+            name: getValue('ownerName'),
+            address: getValue('ownerAddress'),
+            operatorName: getValue('operatorName'),
+            operatorContact: getValue('operatorContact'),
+            masterName: getValue('masterName'),
+            emergencyContact: getValue('emergencyContact')
         },
         revision: {
             lastDrydock: getValue('lastDrydock'),
@@ -293,14 +366,28 @@ function collectPlanData() {
         },
         operatingProfile: {
             speed: getValue('operatingSpeed'),
+            maxSpeed: getValue('maxSpeed'),
+            minSpeed: getValue('minSpeed'),
             inServicePeriod: getValue('inServicePeriod'),
+            drydockInterval: getValue('drydockInterval'),
+            annualOperatingDays: getValue('annualOperatingDays'),
             tradingRoutes: getValue('tradingRoutes'),
             operatingArea: getValue('operatingArea'),
             climateZones: getValue('climateZones'),
-            afsSuitability: getValue('afsSuitability')
+            seasonalOperations: getValue('seasonalOperations'),
+            averageIdlePeriod: getValue('averageIdlePeriod'),
+            maxIdlePeriod: getValue('maxIdlePeriod'),
+            layupProcedures: getValue('layupProcedures'),
+            speedRestrictions: getValue('speedRestrictions'),
+            afsSuitability: getValue('afsSuitability'),
+            afsSuitabilityNotes: getValue('afsSuitabilityNotes')
         },
         nicheAreas: {
+            selected: getCheckedCheckboxes('.niche-checkbox'),
+            internalSystems: getCheckedCheckboxes('[id^="internal_"]'),
             description: getValue('nicheAreaDescription'),
+            unprotectedAreas: getValue('unprotectedAreas'),
+            internalSystemsDescription: getValue('internalSystemsDescription'),
             diagrams: getFileDataUrls('diagramFiles')
         },
         afc: collectDynamicData('.afc-item', 'afc', [
@@ -308,9 +395,18 @@ function collectPlanData() {
             'Manufacturer',
             'Type',
             'ServiceLife',
+            'ApplicationDate',
+            'DrydockLocation',
+            'PrimerName',
+            'PrimerCoats',
+            'Tiecoat',
+            'Topcoats',
+            'Thickness',
+            'Color',
             'Locations',
             'SuitableProfile',
-            'Maintenance'
+            'Maintenance',
+            'SpecialConsiderations'
         ]),
         iafs: {
             number: getValue('iafsNumber'),
@@ -322,13 +418,38 @@ function collectPlanData() {
             'Model',
             'Type',
             'ServiceLife',
+            'InstallDate',
+            'LastService',
+            'OperationalStatus',
+            'MaintenanceInterval',
             'Locations',
-            'Manual'
+            'OperatingParameters',
+            'Maintenance',
+            'Manual',
+            'ManualLocation'
         ]),
         afsInstallation: getValue('afsInstallation'),
-        maintenance: {
-            inspectionSchedule: getValue('inspectionSchedule'),
-            cleaningSchedule: getValue('cleaningSchedule')
+        inspections: {
+            daily: getValue('inspectionDaily'),
+            weekly: getValue('inspectionWeekly'),
+            monthly: getValue('inspectionMonthly'),
+            quarterly: getValue('inspectionQuarterly'),
+            annual: getValue('inspectionAnnual'),
+            preArrival: getValue('inspectionPreArrival')
+        },
+        uwild: {
+            frequency: getValue('uwildFrequency'),
+            lastDate: getValue('uwildLastDate'),
+            procedure: getValue('uwildProcedure'),
+            contractors: getValue('uwildContractors')
+        },
+        cleaning: {
+            hullSchedule: getValue('cleaningHullSchedule'),
+            nicheSchedule: getValue('cleaningNicheSchedule'),
+            internalSchedule: getValue('cleaningInternalSchedule'),
+            methods: getValue('cleaningMethods'),
+            contractors: getValue('cleaningContractors'),
+            restrictions: getValue('cleaningRestrictions')
         },
         riskManagement: {
             parameters: getValue('riskParameters'),
@@ -338,9 +459,23 @@ function collectPlanData() {
         },
         procedures: {
             wasteManagement: getValue('wasteManagement'),
-            safetyProcedures: getValue('safetyProcedures')
+            wasteContainment: getValue('wasteContainment'),
+            safetyProcedures: getValue('safetyProcedures'),
+            safetyEquipment: getValue('safetyEquipment'),
+            emergencyProcedures: getValue('emergencyProcedures')
         },
-        crewTraining: getValue('crewTraining'),
+        training: {
+            details: getValue('crewTraining'),
+            topics: getValue('trainingTopics'),
+            frequency: getValue('trainingFrequency'),
+            provider: getValue('trainingProvider')
+        },
+        communication: {
+            reportingProcedures: getValue('reportingProcedures'),
+            externalReporting: getValue('externalReporting'),
+            documentRetention: getValue('documentRetention'),
+            keyContacts: getValue('keyContacts')
+        },
         document: {
             title: getValue('planTitle'),
             number: getValue('documentNumber'),
@@ -385,6 +520,12 @@ function getFileDataUrls(id) {
     const previewContainer = document.getElementById(previewContainerId);
     if (!previewContainer) return [];
     return Array.from(previewContainer.querySelectorAll('img.preview-img')).map(img => img.src);
+}
+
+function getCheckedCheckboxes(selector) {
+    return Array.from(document.querySelectorAll(selector))
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
 }
 
 function collectDynamicData(selector, prefix, fields) {
@@ -517,19 +658,23 @@ function generatePlanHtml(data) {
     const tocItems = [];
     if (includeBFMP) {
         tocItems.push(
-            '<li><a href="#intro">Introduction / Plan Overview</a></li>',
-            '<li><a href="#vessel">Vessel Particulars</a></li>',
-            '<li><a href="#revision">Record of Revision</a></li>',
-            '<li><a href="#operating">Operating Profile</a></li>',
-            '<li><a href="#niche">Hull and Niche Areas</a></li>',
-            '<li><a href="#afs">Anti-fouling Systems (AFS)</a></li>',
-            '<li><a href="#installation">Installation of Anti-fouling Systems</a></li>',
-            '<li><a href="#inspection">Inspection Schedule</a></li>',
-            '<li><a href="#cleaning">Cleaning Schedule</a></li>',
-            '<li><a href="#monitoring">Monitoring of Biofouling Risk Parameters</a></li>',
-            '<li><a href="#waste">Capture and Disposal of Waste</a></li>',
-            '<li><a href="#safety">Safety Procedures</a></li>',
-            '<li><a href="#training">Crew Training and Familiarisation</a></li>'
+            '<li><a href="#intro">1. Scope and Purpose</a></li>',
+            '<li><a href="#vessel">2. Vessel Particulars</a></li>',
+            '<li><a href="#revision">3. Record of Revision</a></li>',
+            '<li><a href="#operating">4. Operating Profile</a></li>',
+            '<li><a href="#niche">5. Hull and Niche Areas</a></li>',
+            '<li><a href="#afs">6. Anti-fouling Systems (AFS)</a></li>',
+            '<li><a href="#installation">7. Installation of Anti-fouling Systems</a></li>',
+            '<li><a href="#inspection">8. Inspection Schedule</a></li>',
+            '<li><a href="#cleaning">9. Cleaning Schedule</a></li>',
+            '<li><a href="#monitoring">10. Monitoring of Biofouling Risk Parameters</a></li>',
+            '<li><a href="#waste">11. Capture and Disposal of Waste</a></li>',
+            '<li><a href="#safety">12. Safety Procedures</a></li>',
+            '<li><a href="#training">13. Crew Training and Familiarisation</a></li>',
+            '<li><a href="#communication">14. Communication and Reporting</a></li>',
+            '<li><a href="#review">15. Review and Amendment</a></li>',
+            '<li><a href="#glossary">16. Glossary of Terms</a></li>',
+            '<li><a href="#references">17. References and Bibliography</a></li>'
         );
     }
     if (includeBFRB) {
@@ -658,15 +803,45 @@ function generatePlanHtml(data) {
             ${tocHtml}
 
             ${includeBFMP ? `
-            <h2 id="intro">1. Introduction / Plan Overview</h2>
+            <h2 id="intro">1. Scope and Purpose</h2>
             <div class="section">
-                <p>This Biofouling Management Plan has been developed to comply with the International Maritime Organization's Guidelines for the Control and Management of Ships' Biofouling to Minimise the Transfer of Invasive Aquatic Species (IMO Resolution MEPC.207(62)) and Australian national guidelines based on the Biosecurity Act 2015.</p>
-                <p>Biofouling is the accumulation of aquatic organisms such as microorganisms, plants, and animals on surfaces and structures immersed in or exposed to the aquatic environment. Biofouling represents a significant pathway for the introduction and spread of invasive aquatic species, which can harm local ecosystems, impact human health, and cause economic damage.</p>
-                <p>The purpose of this plan is to provide guidance on vessel-specific biofouling management measures to minimise the transfer of invasive aquatic species. This plan details operational practices and measures to be implemented to manage biofouling risks for the vessel.</p>
-                <h3>1.1 Vessel Applicability</h3>
-                <p>This Biofouling Management Plan applies specifically to the vessel ${getFieldValueOrPlaceholder(data.vessel.name, 'Vessel name must be entered in the Vessel Details section')}, IMO ${getFieldValueOrPlaceholder(data.vessel.imo, 'IMO number must be entered in the Vessel Details section')}.</p>
-                <h3>1.2 Plan Review Schedule</h3>
-                <p>This Biofouling Management Plan shall be reviewed and updated at intervals not exceeding five years, following major modifications to underwater surfaces, or when there is a significant change in the vessel's operational profile. The ${getFieldValueOrPlaceholder(data.revision.responsiblePosition, 'responsible person')} is responsible for ensuring reviews are conducted.</p>
+                <h3>1.1 Background and Scope</h3>
+                <p>Biofouling represents a significant vector for the transfer of invasive aquatic species. If not managed appropriately, biofouling on vessels has the potential to result in the establishment of invasive aquatic species which may pose threats to human, animal and plant life, economic and cultural activities, and the aquatic environment. Biofouling can also impose operational limitations and additional costs for vessel maintenance and operations.</p>
+                <p>This Biofouling Management Plan has been developed to comply with the International Maritime Organization's Guidelines for the Control and Management of Ships' Biofouling to Minimise the Transfer of Invasive Aquatic Species (IMO Resolution MEPC.207(62)), Australian national guidelines based on the Biosecurity Act 2015, and other applicable international and national regulations.</p>
+                <p>Biofouling is the accumulation of aquatic organisms such as microorganisms, plants, algae, and animals on surfaces and structures immersed in or exposed to the aquatic environment. Implementation of an effective biofouling management regime is critical for minimising the transfer of invasive aquatic species and reducing operational costs associated with increased hull resistance.</p>
+                
+                <h3>1.2 Vessel Applicability</h3>
+                <p>This Biofouling Management Plan is specific and unique to the vessel ${getFieldValueOrPlaceholder(data.vessel.name, 'Vessel name must be entered in the Vessel Details section')}, IMO ${getFieldValueOrPlaceholder(data.vessel.imo, 'IMO number must be entered in the Vessel Details section')}, and has been prepared in accordance with IMO Resolution MEPC.207(62).</p>
+                <p>This Plan is to be used in conjunction with the vessel's Biofouling Record Book, which documents all inspections and biofouling management measures undertaken on the vessel.</p>
+                
+                <h3>1.3 Safety and Training Considerations</h3>
+                <p><strong>Safety Procedures:</strong> The vessel's safety procedures must be followed for all inspection and cleaning work, including:</p>
+                <ul>
+                    <li>Lockout/tagout of propulsion shafts, rudders, thrusters, trim tabs, and other rotating or moving equipment</li>
+                    <li>Confined space entry procedures in accordance with vessel procedures and applicable regulations</li>
+                    <li>Diving operations safety protocols for underwater inspection and cleaning activities</li>
+                    <li>All relevant tag-out and permit-to-work procedures as specified in vessel standing orders</li>
+                </ul>
+                <p><strong>Personnel Qualifications:</strong> All personnel involved with in-water inspection and cleaning of biofouling must be:</p>
+                <ul>
+                    <li>Suitably qualified for underwater tasks or confined space entry as applicable</li>
+                    <li>Trained in identifying biofouling and assessing biofouling levels</li>
+                    <li>Familiar with this Biofouling Management Plan and associated procedures</li>
+                    <li>Aware of biosecurity requirements and invasive species risks</li>
+                </ul>
+                <p><strong>Regulatory Compliance:</strong> In-water hull cleaning should only be conducted following approval from the port authority or other applicable regulatory authority, consistent with local and national in-water cleaning guidelines. Safety Data Sheets (SDS) must be obtained and held with the Biofouling Record Book for all chemicals used for cleaning or treatment of biofouling.</p>
+                
+                <h3>1.4 Plan Structure</h3>
+                <p>This Biofouling Management Plan details:</p>
+                <ul>
+                    <li>Vessel particulars and operational profile</li>
+                    <li>Description of hull and niche areas where biofouling is likely to accumulate</li>
+                    <li>Anti-fouling systems installed on the vessel</li>
+                    <li>Inspection and cleaning schedules and procedures</li>
+                    <li>Risk monitoring and contingency planning</li>
+                    <li>Waste disposal, safety procedures, and crew training requirements</li>
+                    <li>Communication, reporting, and record-keeping procedures</li>
+                </ul>
             </div>
 
             <h2 id="vessel">2. Vessel Particulars</h2>
@@ -674,33 +849,81 @@ function generatePlanHtml(data) {
                 <table class="details-table">
                     <tr>
                         <th>Vessel Name</th>
-                        <td>${getFieldValueOrPlaceholder(data.vessel.name, 'Enter the full name of the vessel as shown on registration documents.')}</td>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.name, 'Enter the full name of the vessel')}</td>
                         <th>IMO Number</th>
-                        <td>${getFieldValueOrPlaceholder(data.vessel.imo, 'Enter the unique IMO ship identification number.')}</td>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.imo, 'Enter IMO number')}</td>
+                    </tr>
+                    <tr>
+                        <th>Call Sign</th>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.callSign, 'Enter vessel call sign')}</td>
+                        <th>Official Number</th>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.officialNumber, 'Enter official number if applicable')}</td>
                     </tr>
                     <tr>
                         <th>Date of Construction</th>
-                        <td>${formatDate(data.vessel.constructionDate) === 'N/A' ? getFieldValueOrPlaceholder('', 'Enter the date when the vessel was built.') : formatDate(data.vessel.constructionDate)}</td>
+                        <td>${formatDate(data.vessel.constructionDate) === 'N/A' ? getFieldValueOrPlaceholder('', 'Enter date of construction') : formatDate(data.vessel.constructionDate)}</td>
+                        <th>Port of Registry</th>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.portOfRegistry, 'Enter port of registry')}</td>
+                    </tr>
+                    <tr>
                         <th>Vessel Type</th>
-                        <td>${getFieldValueOrPlaceholder(data.vessel.type, 'Indicate the vessel type (e.g., Cargo Ship, Tanker, etc.)')}</td>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.type, 'Enter vessel type')}</td>
+                        <th>Vessel Class</th>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.vesselClass, 'Enter vessel class if applicable')}</td>
                     </tr>
                     <tr>
                         <th>Gross Tonnage</th>
-                        <td>${getFieldValueOrPlaceholder(data.vessel.grossTonnage, 'Enter the vessel\'s gross tonnage.')}</td>
-                        <th>Beam (m)</th>
-                        <td>${getFieldValueOrPlaceholder(data.vessel.beam, 'Enter the vessel\'s maximum width in meters.')}</td>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.grossTonnage, 'Enter gross tonnage')}</td>
+                        <th>Net Tonnage</th>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.netTonnage, 'Enter net tonnage if applicable')}</td>
+                    </tr>
+                    <tr>
+                        <th>Deadweight Tonnage</th>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.deadweight, 'Enter DWT if applicable')}</td>
+                        <th>Classification Society</th>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.classificationSociety, 'Enter classification society')}</td>
                     </tr>
                     <tr>
                         <th>Length Overall (m)</th>
-                        <td>${getFieldValueOrPlaceholder(data.vessel.length, 'Enter the vessel\'s total length in meters.')}</td>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.length, 'Enter LOA')}</td>
+                        <th>Length BP (m)</th>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.lengthBP, 'Enter length between perpendiculars')}</td>
+                    </tr>
+                    <tr>
+                        <th>Beam (m)</th>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.beam, 'Enter beam')}</td>
                         <th>Flag State</th>
-                        <td>${getFieldValueOrPlaceholder(data.vessel.flag, 'Enter the country of vessel registration.')}</td>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.flag, 'Enter flag state')}</td>
                     </tr>
                     <tr>
                         <th>Maximum Draft (m)</th>
-                        <td>${getFieldValueOrPlaceholder(data.vessel.maxDraft, 'Enter the vessel\'s maximum operating draft in meters.')}</td>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.maxDraft, 'Enter maximum draft')}</td>
                         <th>Minimum Draft (m)</th>
-                        <td>${getFieldValueOrPlaceholder(data.vessel.minDraft, 'Enter the vessel\'s minimum operating draft in meters.')}</td>
+                        <td>${getFieldValueOrPlaceholder(data.vessel.minDraft, 'Enter minimum draft')}</td>
+                    </tr>
+                </table>
+                
+                <h3>2.1 Owner and Operator Information</h3>
+                <table class="details-table">
+                    <tr>
+                        <th>Registered Owner</th>
+                        <td colspan="3">${getFieldValueOrPlaceholder(data.owner.name, 'Enter registered owner name')}</td>
+                    </tr>
+                    <tr>
+                        <th>Owner Address</th>
+                        <td colspan="3">${getFieldValueOrPlaceholder(data.owner.address, 'Enter owner address')}</td>
+                    </tr>
+                    <tr>
+                        <th>Operator/Manager</th>
+                        <td>${getFieldValueOrPlaceholder(data.owner.operatorName, 'Enter operator name')}</td>
+                        <th>Operator Contact</th>
+                        <td>${getFieldValueOrPlaceholder(data.owner.operatorContact, 'Enter contact details')}</td>
+                    </tr>
+                    <tr>
+                        <th>Master's Name</th>
+                        <td>${getFieldValueOrPlaceholder(data.owner.masterName, 'Enter master name')}</td>
+                        <th>Emergency Contact</th>
+                        <td>${getFieldValueOrPlaceholder(data.owner.emergencyContact, 'Enter emergency contact')}</td>
                     </tr>
                 </table>
             </div>
@@ -778,12 +1001,40 @@ function generatePlanHtml(data) {
 
             <h2 id="inspection">8. Inspection Schedule</h2>
             <div class="section">
-                <p>${getFieldValueOrPlaceholder(data.maintenance.inspectionSchedule, 'Document the vessel\'s planned inspection schedule for monitoring biofouling. Specify areas to be inspected, inspection frequency, methods, and recordkeeping requirements.')}</p>
+                <h3>8.1 Routine Inspection Activities</h3>
+                <p><strong>Daily:</strong> ${getFieldValueOrPlaceholder(data.inspections.daily, 'MGPS operation checks, visual checks of accessible areas')}</p>
+                <p><strong>Weekly:</strong> ${getFieldValueOrPlaceholder(data.inspections.weekly, 'MGPS detailed checks, seachest grating visual inspection')}</p>
+                <p><strong>Monthly:</strong> ${getFieldValueOrPlaceholder(data.inspections.monthly, 'Internal seawater systems inspection, MGPS performance review')}</p>
+                <p><strong>Quarterly:</strong> ${getFieldValueOrPlaceholder(data.inspections.quarterly, 'Detailed niche area inspections, floating equipment checks')}</p>
+                <p><strong>Annual:</strong> ${getFieldValueOrPlaceholder(data.inspections.annual, 'Comprehensive underwater inspection (UWILD or drydock)')}</p>
+                <p><strong>Pre-Arrival:</strong> ${getFieldValueOrPlaceholder(data.inspections.preArrival, 'Pre-arrival biosecurity inspection procedures')}</p>
+                
+                <h3>8.2 Underwater Inspection in Water (UWILD)</h3>
+                <p><strong>Frequency:</strong> ${getFieldValueOrPlaceholder(data.uwild.frequency, 'Define UWILD inspection frequency (e.g., quarterly, semi-annual, annual)')}</p>
+                <p><strong>Last UWILD Date:</strong> ${formatDate(data.uwild.lastDate) === 'N/A' ? getFieldValueOrPlaceholder('', 'Enter date of last UWILD inspection') : formatDate(data.uwild.lastDate)}</p>
+                <p><strong>UWILD Procedures:</strong> ${getFieldValueOrPlaceholder(data.uwild.procedure, 'Describe UWILD procedures, areas covered, recording methods, and reporting')}</p>
+                <p><strong>Approved Contractors:</strong> ${getFieldValueOrPlaceholder(data.uwild.contractors, 'List approved UWILD contractors or internal capabilities')}</p>
             </div>
 
             <h2 id="cleaning">9. Cleaning Schedule</h2>
             <div class="section">
-                <p>${getFieldValueOrPlaceholder(data.maintenance.cleaningSchedule, 'Detail the vessel\'s proactive cleaning schedule, including routine cleaning activities and methods used for different vessel areas.')}</p>
+                <h3>9.1 Hull Cleaning</h3>
+                <p>${getFieldValueOrPlaceholder(data.cleaning.hullSchedule, 'Document the hull cleaning schedule, including frequency, methods, and conditions triggering hull cleaning')}</p>
+                
+                <h3>9.2 Niche Area Cleaning</h3>
+                <p>${getFieldValueOrPlaceholder(data.cleaning.nicheSchedule, 'Specify cleaning frequency and methods for sea chests, thrusters, gratings, and other niche areas')}</p>
+                
+                <h3>9.3 Internal System Cleaning</h3>
+                <p>${getFieldValueOrPlaceholder(data.cleaning.internalSchedule, 'Describe cleaning/flushing procedures for internal seawater systems')}</p>
+                
+                <h3>9.4 Cleaning Methods & Equipment</h3>
+                <p>${getFieldValueOrPlaceholder(data.cleaning.methods, 'Detail approved cleaning methods (brushing, polishing, grooming, pressure washing), equipment, and limitations')}</p>
+                
+                <h3>9.5 Approved Cleaning Contractors</h3>
+                <p>${getFieldValueOrPlaceholder(data.cleaning.contractors, 'List approved in-water cleaning contractors and contact details')}</p>
+                
+                <h3>9.6 Cleaning Restrictions & Requirements</h3>
+                <p>${getFieldValueOrPlaceholder(data.cleaning.restrictions, 'Document port authority requirements, environmental restrictions, and capture requirements')}</p>
             </div>
 
             <h2 id="monitoring">10. Monitoring of Biofouling Risk Parameters and Contingency Actions</h2>
@@ -800,18 +1051,38 @@ function generatePlanHtml(data) {
 
             <h2 id="waste">11. Capture and Disposal of Waste</h2>
             <div class="section">
-                <p>${getFieldValueOrPlaceholder(data.procedures.wasteManagement, 'Document procedures for the capture, treatment, and disposal of biofouling waste in accordance with local and international regulations.')}</p>
+                <h3>11.1 Waste Management Procedures</h3>
+                <p>${getFieldValueOrPlaceholder(data.procedures.wasteManagement, 'Document procedures for the capture, treatment, and disposal of biofouling waste in accordance with MARPOL Annex V, local port regulations, and biosecurity requirements. Specify requirements for waste segregation, temporary storage, and approved disposal methods. Include procedures for documenting waste disposal in accordance with regulatory requirements.')}</p>
+                
+                <h3>11.2 Waste Containment Methods</h3>
+                <p>${getFieldValueOrPlaceholder(data.procedures.wasteContainment, 'Detail the equipment and methods used to contain biofouling waste during cleaning operations. This may include: containment curtains, collection devices, filtration systems, vacuum equipment, and temporary storage containers. Specify procedures for preventing release of biofouling material into the surrounding water during in-water cleaning activities.')}</p>
             </div>
 
             <h2 id="safety">12. Safety Procedures for the Vessel and Crew</h2>
             <div class="section">
-                <p>${getFieldValueOrPlaceholder(data.procedures.safetyProcedures, 'Detail safety procedures related to the operation and maintenance of anti-fouling systems and cleaning equipment. Include personal protective equipment requirements, operational restrictions, hazard identification, and emergency procedures.')}</p>
+                <h3>12.1 General Safety Procedures</h3>
+                <p>${getFieldValueOrPlaceholder(data.procedures.safetyProcedures, 'Detail safety procedures for all biofouling management activities including: lockout/tagout procedures for rotating equipment (propellers, thrusters, trim tabs), confined space entry procedures for internal system inspection/cleaning, diving operations safety protocols, chemical handling procedures for cleaning agents and biocides, working at heights for above-waterline tasks, and permit-to-work systems.')}</p>
+                
+                <h3>12.2 Required Safety Equipment</h3>
+                <p>${getFieldValueOrPlaceholder(data.procedures.safetyEquipment, 'List all personal protective equipment and safety equipment required for biofouling management activities:\n• PPE: gloves, safety glasses, respirators, protective clothing\n• Confined space equipment: gas detectors, ventilation equipment, communication devices, rescue equipment\n• Diving equipment: appropriate to the diving operation\n• Lockout/tagout devices\n• First aid equipment\n• Safety data sheets for all chemicals used')}</p>
+                
+                <h3>12.3 Emergency Procedures</h3>
+                <p>${getFieldValueOrPlaceholder(data.procedures.emergencyProcedures, 'Document emergency response procedures for incidents during biofouling management activities including: medical emergencies, confined space incidents, diving emergencies, chemical spills or exposure, equipment failure, and unplanned release of biofouling waste. Include emergency contact numbers and procedures for notifying relevant authorities.')}</p>
             </div>
 
             <h2 id="training">13. Crew Training and Familiarisation</h2>
             <div class="section">
-                <p>${getFieldValueOrPlaceholder(data.crewTraining, 'Outline the training program for crew members involved in biofouling management activities. Specify training content, frequency, who delivers the training, and which crew members require training.')}</p>
-                <h3>13.1 Training Register</h3>
+                <h3>13.1 Training Program</h3>
+                <p>${getFieldValueOrPlaceholder(data.training.details, 'Outline the training program for crew members involved in biofouling management activities. Specify training content, frequency, who delivers the training, and which crew members require training.')}</p>
+                
+                <h3>13.2 Training Topics</h3>
+                <p>${getFieldValueOrPlaceholder(data.training.topics, 'Biofouling identification, IMO guidelines, inspection procedures, record keeping, biosecurity awareness, safety procedures')}</p>
+                
+                <h3>13.3 Training Frequency and Provider</h3>
+                <p><strong>Training Frequency:</strong> ${getFieldValueOrPlaceholder(data.training.frequency, 'Define training frequency (e.g., initial, annual, biannual)')}</p>
+                <p><strong>Training Provider:</strong> ${getFieldValueOrPlaceholder(data.training.provider, 'Specify internal or external training provider')}</p>
+                
+                <h3>13.4 Training Register</h3>
                 <table class="details-table">
                     <thead>
                         <tr>
@@ -827,7 +1098,152 @@ function generatePlanHtml(data) {
                         </tr>
                     </tbody>
                 </table>
-            </div>` : ''}
+            </div>
+            
+            <h2 id="communication">14. Communication and Reporting</h2>
+            <div class="section">
+                <h3>14.1 Internal Reporting Procedures</h3>
+                <p>${getFieldValueOrPlaceholder(data.communication.reportingProcedures, 'Document internal reporting procedures for biofouling management. Specify who is responsible for monitoring and reporting biofouling status, to whom reports should be made, and under what circumstances. Include reporting lines for significant biofouling events, deviations from the plan, or situations requiring management intervention.')}</p>
+                
+                <h3>14.2 External Reporting Requirements</h3>
+                <p>${getFieldValueOrPlaceholder(data.communication.externalReporting, 'Detail external reporting requirements to port state authorities, biosecurity agencies, or regulatory bodies. Include requirements for MARS (Maritime Arrivals Reporting System) in Australia, MPI declarations in New Zealand, California reporting forms, and any other jurisdiction-specific requirements. Specify timeframes and procedures for these reports.')}</p>
+                
+                <h3>14.3 Documentation and Record Retention</h3>
+                <p>${getFieldValueOrPlaceholder(data.communication.documentRetention, 'Specify record keeping requirements for the Biofouling Management Plan and associated Biofouling Record Book. Include retention periods (typically minimum 5 years or vessel lifetime), storage locations (onboard and shore-based), backup procedures, and who has access to these documents. Document any specific regulatory requirements for record retention.')}</p>
+                
+                <h3>14.4 Key Contacts</h3>
+                <p>${getFieldValueOrPlaceholder(data.communication.keyContacts, 'Provide contact details for key personnel and organizations involved in biofouling management:\n• BFMP Coordinator (onboard contact)\n• Shore Management (technical superintendent, fleet manager)\n• Approved Inspection Contractors\n• Approved Cleaning Contractors\n• Regulatory Authorities (DAFF, MPI, port authorities)\n• Classification Society\n• Emergency Response Contacts')}</p>
+            </div>
+            
+            <h2 id="review">15. Review and Amendment</h2>
+            <div class="section">
+                <h3>15.1 Review Schedule</h3>
+                <p>This Biofouling Management Plan shall be reviewed and updated as necessary, but at intervals not exceeding five (5) years. Reviews should also be conducted following:</p>
+                <ul>
+                    <li>Significant changes to the vessel's operational profile</li>
+                    <li>Major modifications to the vessel's hull or underwater appendages</li>
+                    <li>Application of new anti-fouling systems</li>
+                    <li>Changes to relevant regulations or industry standards</li>
+                    <li>Significant biofouling events or biosecurity incidents</li>
+                    <li>Following feedback from regulatory inspections</li>
+                </ul>
+                
+                <h3>15.2 Amendment Procedures</h3>
+                <p>Amendments to this Biofouling Management Plan shall be:</p>
+                <ul>
+                    <li>Proposed by the ${getFieldValueOrPlaceholder(data.revision.responsiblePosition, 'responsible person')} or other designated personnel</li>
+                    <li>Reviewed and approved by vessel management and/or the vessel owner</li>
+                    <li>Documented in Section 3 (Record of Revision)</li>
+                    <li>Communicated to all relevant personnel</li>
+                    <li>Retained as part of the vessel's official documentation</li>
+                </ul>
+                
+                <h3>15.3 Distribution and Accessibility</h3>
+                <p>This Biofouling Management Plan and the associated Biofouling Record Book shall be:</p>
+                <ul>
+                    <li>Maintained onboard the vessel at all times</li>
+                    <li>Made available for inspection by Port State Control, quarantine authorities, and other regulatory bodies</li>
+                    <li>Accessible to all crew members involved in biofouling management activities</li>
+                    <li>Backed up in shore-based systems to prevent loss</li>
+                </ul>
+            </div>
+            
+            <h2 id="glossary">16. Glossary of Terms</h2>
+            <div class="section">
+                <table class="details-table">
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                    </tr>
+                    <tr>
+                        <td><strong>AFC</strong></td>
+                        <td>Anti-Fouling Coating - Paint or coating system applied to underwater surfaces to prevent or reduce biofouling accumulation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AFS</strong></td>
+                        <td>Anti-Fouling System - The overall system including coatings, MGPS, and management procedures used to prevent biofouling</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Biofouling</strong></td>
+                        <td>The accumulation of aquatic organisms such as microorganisms, plants, algae, and animals on surfaces and structures immersed in or exposed to the aquatic environment</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BFMP</strong></td>
+                        <td>Biofouling Management Plan - A vessel-specific plan outlining procedures to manage and minimize biofouling</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BFRB</strong></td>
+                        <td>Biofouling Record Book - Record of biofouling management activities undertaken on a vessel</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DAFF</strong></td>
+                        <td>Australian Department of Agriculture, Fisheries and Forestry (responsible for biosecurity)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DFT</strong></td>
+                        <td>Dry Film Thickness - The thickness of a dried coating, typically measured in micrometers (μm)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IAFS</strong></td>
+                        <td>International Anti-Fouling System Certificate - Certificate issued under the AFS Convention</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IMO</strong></td>
+                        <td>International Maritime Organization - UN agency responsible for maritime safety and pollution prevention</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IMS/IAS</strong></td>
+                        <td>Invasive Marine/Aquatic Species - Non-native species that can cause ecological or economic harm</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MARS</strong></td>
+                        <td>Maritime Arrivals Reporting System - Australian system for reporting vessel arrivals and biosecurity information</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MGPS</strong></td>
+                        <td>Marine Growth Prevention System - System using electrolysis, chemicals, or other methods to prevent biofouling in internal seawater systems</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MPI</strong></td>
+                        <td>Ministry for Primary Industries (New Zealand) - Responsible for biosecurity in New Zealand</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Niche Areas</strong></td>
+                        <td>Areas of a vessel where biofouling is likely to accumulate (sea chests, thruster tunnels, gratings, etc.)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UWILD</strong></td>
+                        <td>Underwater Inspection in Lieu of Drydocking - Inspection of underwater hull while vessel remains afloat</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <h2 id="references">17. References and Bibliography</h2>
+            <div class="section">
+                <h3>17.1 International Conventions and Guidelines</h3>
+                <ul>
+                    <li>IMO Resolution MEPC.207(62) - Guidelines for the Control and Management of Ships' Biofouling to Minimize the Transfer of Invasive Aquatic Species (2011)</li>
+                    <li>International Convention on the Control of Harmful Anti-Fouling Systems on Ships, 2001 (AFS Convention)</li>
+                    <li>International Convention for the Prevention of Pollution from Ships (MARPOL)</li>
+                </ul>
+                
+                <h3>17.2 National Regulations and Guidelines</h3>
+                <ul>
+                    <li>Commonwealth of Australia Biosecurity Act 2015</li>
+                    <li>Australian National Biofouling Management Guidance for Non-Trading Vessels, DAFF (2015)</li>
+                    <li>Anti-fouling and In-water Cleaning Guidelines, Australian Government (2015)</li>
+                    <li>New Zealand Craft Risk Management Standard: Biofouling on Vessels Arriving to New Zealand, MPI (2018)</li>
+                    <li>California Code of Regulations, Title 2, Section 2298.1 et seq. - Biofouling Management Regulations</li>
+                </ul>
+                
+                <h3>17.3 Industry Standards and Publications</h3>
+                <ul>
+                    <li>Classification Society Rules and Guidelines (vessel-specific)</li>
+                    <li>Anti-fouling coating manufacturer technical data sheets and application guides</li>
+                    <li>MGPS manufacturer operating and maintenance manuals</li>
+                </ul>
+            </div>
+            ` : ''}
 
             ${includeBFMP && includeBFRB ? '<div class="page-break"></div>' : ''}
 
