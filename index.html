@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standalone Biofouling Management Plan Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./bfmp.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="page-header">
+        <div class="container">
+            <h1>Biofouling Management Plan &amp; Record Book Generator</h1>
+            <p class="page-description">
+                Generate a vessel-specific Biofouling Management Plan (BFMP) and optional Record Book aligned with IMO
+                guidance and leading biosecurity regulations. Complete the guided steps, preview the plan, then print or
+                save it as a PDF.
+            </p>
+        </div>
+    </header>
+
+    <section class="intro-section" id="about-bfmp">
+        <div class="container">
+            <div class="intro-content">
+                <div class="intro-icon">
+                    <i class="fas fa-ship" aria-hidden="true"></i>
+                </div>
+                <h2>Why You Need a Biofouling Management Plan</h2>
+                <p>
+                    A Biofouling Management Plan (BFMP) outlines how a vessel minimises the accumulation of marine growth
+                    on submerged surfaces. It is increasingly required by flag states and port authorities to reduce the
+                    transfer of invasive aquatic species and demonstrate responsible environmental stewardship.
+                </p>
+                <p>
+                    This standalone generator follows IMO Resolution MEPC.207(62) and aligns with Australian and New
+                    Zealand biosecurity expectations. Completing the plan helps you stay compliant, reduce fuel costs,
+                    and avoid unexpected port delays linked to biofouling inspections.
+                </p>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="benefit-text">Regulatory Compliance</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="fas fa-leaf"></i></div>
+                        <div class="benefit-text">Environmental Protection</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="fas fa-gas-pump"></i></div>
+                        <div class="benefit-text">Reduced Fuel Consumption</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="fas fa-anchor"></i></div>
+                        <div class="benefit-text">Fewer Port Delays</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main id="main-content" class="main-content">
+        <div class="container">
+            <div class="generator-content" id="generator">
+                <div class="progress-indicator" aria-hidden="true">
+                    <div class="progress-step active" data-step="1">
+                        <span class="step-number">1</span>
+                        <span class="step-label">Vessel Details</span>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <span class="step-number">2</span>
+                        <span class="step-label">Operating Profile</span>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <span class="step-number">3</span>
+                        <span class="step-label">Anti-fouling Systems</span>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <span class="step-number">4</span>
+                        <span class="step-label">Management Procedures</span>
+                    </div>
+                    <div class="progress-step" data-step="5">
+                        <span class="step-number">5</span>
+                        <span class="step-label">Generate Plan</span>
+                    </div>
+                </div>
+
+                <div class="tabs" role="tablist" aria-label="BFMP steps">
+                    <button class="tab-btn active" data-tab="vessel-details" role="tab" aria-controls="vessel-details"
+                        aria-selected="true">Vessel Details</button>
+                    <button class="tab-btn" data-tab="operating-profile" role="tab" aria-controls="operating-profile"
+                        aria-selected="false">Operating Profile</button>
+                    <button class="tab-btn" data-tab="anti-fouling" role="tab" aria-controls="anti-fouling"
+                        aria-selected="false">Anti-fouling Systems</button>
+                    <button class="tab-btn" data-tab="management" role="tab" aria-controls="management"
+                        aria-selected="false">Management Procedures</button>
+                    <button class="tab-btn" data-tab="generate" role="tab" aria-controls="generate"
+                        aria-selected="false">Generate Plan</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="vessel-details" class="tab-pane active" role="tabpanel" aria-labelledby="vessel-details-tab">
+                        <h4>Vessel Particulars</h4>
+                        <div class="info-note">
+                            <p><i class="fas fa-info-circle" aria-hidden="true"></i> Complete all required vessel particulars to
+                                meet the IMO Biofouling Management Plan guidance.</p>
+                        </div>
+                        <form class="form-grid">
+                            <div class="form-group">
+                                <label for="vesselName">Vessel Name*</label>
+                                <input type="text" id="vesselName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="imoNumber">IMO Number*</label>
+                                <input type="text" id="imoNumber" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="constructionDate">Date of Construction*</label>
+                                <input type="date" id="constructionDate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="vesselType">Vessel Type*</label>
+                                <select id="vesselType" class="form-control" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Cargo Ship">Cargo Ship</option>
+                                    <option value="Tanker">Tanker</option>
+                                    <option value="Bulk Carrier">Bulk Carrier</option>
+                                    <option value="Container Ship">Container Ship</option>
+                                    <option value="Passenger Vessel">Passenger Vessel</option>
+                                    <option value="Fishing Vessel">Fishing Vessel</option>
+                                    <option value="Tug/Offshore">Tug/Offshore</option>
+                                    <option value="Naval Vessel">Naval Vessel</option>
+                                    <option value="Research Vessel">Research Vessel</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="grossTonnage">Gross Tonnage*</label>
+                                <input type="number" id="grossTonnage" class="form-control" min="0" step="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="beam">Beam (m)*</label>
+                                <input type="number" id="beam" class="form-control" min="0" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="length">Length Overall (m)*</label>
+                                <input type="number" id="length" class="form-control" min="0" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="maxDraft">Maximum Draft (m)*</label>
+                                <input type="number" id="maxDraft" class="form-control" min="0" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="minDraft">Minimum Draft (m)*</label>
+                                <input type="number" id="minDraft" class="form-control" min="0" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="flag">Flag State*</label>
+                                <input type="text" id="flag" class="form-control" required>
+                            </div>
+                        </form>
+
+                        <h4>BFMP Revision Information</h4>
+                        <form class="form-grid">
+                            <div class="form-group">
+                                <label for="lastDrydock">Date of Last Dry-docking*</label>
+                                <input type="date" id="lastDrydock" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nextDrydock">Date of Next Scheduled Dry-docking*</label>
+                                <input type="date" id="nextDrydock" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="revisionNumber">BFMP Revision Number*</label>
+                                <input type="text" id="revisionNumber" class="form-control" placeholder="e.g., Rev. 1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="revisionDate">Revision Date*</label>
+                                <input type="date" id="revisionDate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="responsiblePerson">Responsible Person*</label>
+                                <input type="text" id="responsiblePerson" class="form-control"
+                                    placeholder="Name responsible for BFMP implementation" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="responsiblePosition">Position/Role*</label>
+                                <input type="text" id="responsiblePosition" class="form-control"
+                                    placeholder="e.g., Chief Officer, Master" required>
+                            </div>
+                        </form>
+                        <div class="form-actions">
+                            <button class="btn btn-secondary prev-tab" data-prev="vessel-details" disabled>Previous</button>
+                            <button class="btn btn-primary next-tab" data-next="operating-profile">Next</button>
+                        </div>
+                    </div>
+
+                    <div id="operating-profile" class="tab-pane" role="tabpanel" aria-labelledby="operating-profile-tab">
+                        <h4>Vessel Operating Profile</h4>
+                        <div class="info-note">
+                            <p><i class="fas fa-info-circle" aria-hidden="true"></i> Document how the vessel operates to confirm
+                                suitability of coatings and management actions.</p>
+                        </div>
+                        <form class="form-grid">
+                            <div class="form-group">
+                                <label for="operatingSpeed">Typical Operating Speed (knots)*</label>
+                                <input type="number" id="operatingSpeed" class="form-control" min="0" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inServicePeriod">In-service Period (months)*</label>
+                                <input type="number" id="inServicePeriod" class="form-control" min="1" max="120" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="tradingRoutes">Typical Trading Routes*</label>
+                                <textarea id="tradingRoutes" class="form-control" rows="3"
+                                    placeholder="Describe main trade routes and ports of call" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="operatingArea">Primary Operating Area*</label>
+                                <select id="operatingArea" class="form-control" required>
+                                    <option value="">Select Area</option>
+                                    <option value="Global">Global</option>
+                                    <option value="Regional (e.g., SE Asia)">Regional (e.g., SE Asia)</option>
+                                    <option value="Coastal (Australia)">Coastal (Australia)</option>
+                                    <option value="Local (e.g., Port Philip Bay)">Local (e.g., Port Philip Bay)</option>
+                                    <option value="Tropical Waters">Tropical Waters</option>
+                                    <option value="Temperate Waters">Temperate Waters</option>
+                                    <option value="Polar Waters">Polar Waters</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="climateZones">Climate Zones*</label>
+                                <textarea id="climateZones" class="form-control" rows="2"
+                                    placeholder="List climate zones where vessel operates" required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="afsSuitability">Are the Installed AFS Suitable for Operating Profile?*</label>
+                                <select id="afsSuitability" class="form-control" required>
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </form>
+
+                        <h4>Hull &amp; Niche Areas Description</h4>
+                        <form class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="nicheAreaDescription">Description of Hull and Niche Areas*</label>
+                                <textarea id="nicheAreaDescription" class="form-control" rows="5"
+                                    placeholder="List hull and niche areas where biofouling accumulates" required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="diagramFiles">Upload Hull Diagrams/Plans*</label>
+                                <input type="file" id="diagramFiles" class="form-control" accept="image/*" multiple required
+                                    data-preview="diagrams-preview">
+                                <small class="form-text text-muted">Upload GA, docking plan and seawater system schematics.</small>
+                                <div class="photos-preview" id="diagrams-preview"></div>
+                            </div>
+                        </form>
+                        <div class="form-actions">
+                            <button class="btn btn-secondary prev-tab" data-prev="vessel-details">Previous</button>
+                            <button class="btn btn-primary next-tab" data-next="anti-fouling">Next</button>
+                        </div>
+                    </div>
+
+                    <div id="anti-fouling" class="tab-pane" role="tabpanel" aria-labelledby="anti-fouling-tab">
+                        <h4>Anti-fouling Coatings (AFC)</h4>
+                        <div class="info-note">
+                            <p><i class="fas fa-info-circle" aria-hidden="true"></i> Add each coating applied to the vessel. Use
+                                the add button to document different systems.</p>
+                        </div>
+                        <div id="afc-container">
+                            <div class="afc-item" data-afc-id="1">
+                                <form class="form-grid">
+                                    <div class="form-group">
+                                        <label for="afcProductName1">Product Name*</label>
+                                        <input type="text" id="afcProductName1" class="form-control afc-product-name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="afcManufacturer1">Manufacturer*</label>
+                                        <input type="text" id="afcManufacturer1" class="form-control afc-manufacturer" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="afcType1">Type of AFC*</label>
+                                        <select id="afcType1" class="form-control afc-type" required>
+                                            <option value="">Select Type</option>
+                                            <option value="Self-Polishing Copolymer (SPC)">Self-Polishing Copolymer (SPC)</option>
+                                            <option value="Controlled Depletion Polymer (CDP)">Controlled Depletion Polymer (CDP)
+                                            </option>
+                                            <option value="Hard Coating">Hard Coating</option>
+                                            <option value="Foul Release Coating">Foul Release Coating</option>
+                                            <option value="Biocide-Free">Biocide-Free</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="afcServiceLife1">Intended Service Life (years)*</label>
+                                        <input type="number" id="afcServiceLife1" class="form-control afc-service-life" min="1"
+                                            max="10" required>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="afcLocations1">Locations Applied*</label>
+                                        <textarea id="afcLocations1" class="form-control afc-locations" rows="2"
+                                            placeholder="Describe areas where coating is applied" required></textarea>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="afcSuitableProfile1">Suitable Operating Profiles*</label>
+                                        <textarea id="afcSuitableProfile1" class="form-control afc-profile" rows="2"
+                                            placeholder="Speeds and activity suited to this AFC" required></textarea>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="afcMaintenance1">Recommended Maintenance/Repair Regime*</label>
+                                        <textarea id="afcMaintenance1" class="form-control afc-maintenance" rows="2"
+                                            placeholder="Describe maintenance regime" required></textarea>
+                                    </div>
+                                </form>
+                                <button class="btn btn-sm btn-secondary remove-afc" type="button" style="display: none;"><i
+                                        class="fas fa-trash"></i> Remove Coating</button>
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button id="add-afc" class="btn btn-sm btn-secondary" type="button"><i class="fas fa-plus"
+                                    aria-hidden="true"></i> Add Another Coating</button>
+                        </div>
+
+                        <h4>IAFS Certificate</h4>
+                        <form class="form-grid">
+                            <div class="form-group">
+                                <label for="iafsNumber">IAFS Certificate Number</label>
+                                <input type="text" id="iafsNumber" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="iafsIssueDate">Issue Date</label>
+                                <input type="date" id="iafsIssueDate" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="iafsFile">Upload IAFS Certificate (Optional)</label>
+                                <input type="file" id="iafsFile" class="form-control" accept="image/*,application/pdf">
+                            </div>
+                        </form>
+
+                        <h4>Marine Growth Prevention Systems (MGPS)</h4>
+                        <div class="info-note">
+                            <p><i class="fas fa-info-circle" aria-hidden="true"></i> Document each MGPS installed on the vessel.
+                            </p>
+                        </div>
+                        <div id="mgps-container">
+                            <div class="mgps-item" data-mgps-id="1">
+                                <form class="form-grid">
+                                    <div class="form-group">
+                                        <label for="mgpsManufacturer1">Manufacturer*</label>
+                                        <input type="text" id="mgpsManufacturer1" class="form-control mgps-manufacturer" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mgpsModel1">Model*</label>
+                                        <input type="text" id="mgpsModel1" class="form-control mgps-model" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mgpsType1">Type of MGPS*</label>
+                                        <select id="mgpsType1" class="form-control mgps-type" required>
+                                            <option value="">Select Type</option>
+                                            <option value="Anodic System">Anodic System</option>
+                                            <option value="Impressed Current">Impressed Current</option>
+                                            <option value="Ultrasonic">Ultrasonic</option>
+                                            <option value="Chemical Dosing">Chemical Dosing</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mgpsServiceLife1">Service Life (years)*</label>
+                                        <input type="number" id="mgpsServiceLife1" class="form-control mgps-service-life" min="1"
+                                            max="20" required>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="mgpsLocations1">Locations Installed*</label>
+                                        <textarea id="mgpsLocations1" class="form-control mgps-locations" rows="2"
+                                            placeholder="Describe areas where system is installed" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mgpsManual1">MGPS Operating Manual Available?*</label>
+                                        <select id="mgpsManual1" class="form-control mgps-manual" required>
+                                            <option value="">Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </form>
+                                <button class="btn btn-sm btn-secondary remove-mgps" type="button" style="display: none;"><i
+                                        class="fas fa-trash"></i> Remove MGPS</button>
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button id="add-mgps" class="btn btn-sm btn-secondary" type="button"><i class="fas fa-plus"
+                                    aria-hidden="true"></i> Add Another MGPS</button>
+                        </div>
+
+                        <h4>Installation Details</h4>
+                        <form class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="afsInstallation">AFS Installation Details*</label>
+                                <textarea id="afsInstallation" class="form-control" rows="5"
+                                    placeholder="Describe where each AFS is applied and any unprotected areas" required></textarea>
+                            </div>
+                        </form>
+                        <div class="form-actions">
+                            <button class="btn btn-secondary prev-tab" data-prev="operating-profile">Previous</button>
+                            <button class="btn btn-primary next-tab" data-next="management">Next</button>
+                        </div>
+                    </div>
+
+                    <div id="management" class="tab-pane" role="tabpanel" aria-labelledby="management-tab">
+                        <h4>Inspection &amp; Cleaning Schedules</h4>
+                        <div class="info-note">
+                            <p><i class="fas fa-info-circle" aria-hidden="true"></i> Define inspection and cleaning approaches to
+                                demonstrate effective management.</p>
+                        </div>
+                        <form class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="inspectionSchedule">Inspection Schedule*</label>
+                                <textarea id="inspectionSchedule" class="form-control" rows="5"
+                                    placeholder="Areas inspected, frequency and management actions" required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="cleaningSchedule">Cleaning Schedule*</label>
+                                <textarea id="cleaningSchedule" class="form-control" rows="5"
+                                    placeholder="Areas to be cleaned, methods used, cleaning schedule" required></textarea>
+                            </div>
+                        </form>
+
+                        <h4>Biofouling Risk Monitoring &amp; Contingency Planning</h4>
+                        <form class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="riskParameters">Biofouling Risk Parameters*</label>
+                                <textarea id="riskParameters" class="form-control" rows="4"
+                                    placeholder="Parameters that indicate increased biofouling risk" required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="deviationLimits">Deviation Limits*</label>
+                                <textarea id="deviationLimits" class="form-control" rows="3"
+                                    placeholder="Limits that trigger contingency actions" required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="contingencyActions">Contingency Actions*</label>
+                                <textarea id="contingencyActions" class="form-control" rows="4"
+                                    placeholder="Actions when risk parameters exceed limits" required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="longTermActions">Long-term Actions*</label>
+                                <textarea id="longTermActions" class="form-control" rows="3"
+                                    placeholder="Long-term management responses" required></textarea>
+                            </div>
+                        </form>
+
+                        <h4>Waste Management &amp; Safety Procedures</h4>
+                        <form class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="wasteManagement">Capture and Disposal of Waste*</label>
+                                <textarea id="wasteManagement" class="form-control" rows="4"
+                                    placeholder="How biofouling waste is managed per regulations" required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="safetyProcedures">Safety Procedures*</label>
+                                <textarea id="safetyProcedures" class="form-control" rows="4"
+                                    placeholder="Safety procedures for vessel and crew" required></textarea>
+                            </div>
+                        </form>
+
+                        <h4>Crew Training &amp; Familiarisation</h4>
+                        <form class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="crewTraining">Crew Training Details*</label>
+                                <textarea id="crewTraining" class="form-control" rows="4"
+                                    placeholder="Training program details, delivery, required crew" required></textarea>
+                            </div>
+                        </form>
+                        <div class="form-actions">
+                            <button class="btn btn-secondary prev-tab" data-prev="anti-fouling">Previous</button>
+                            <button class="btn btn-primary next-tab" data-next="generate">Next</button>
+                        </div>
+                    </div>
+
+                    <div id="generate" class="tab-pane" role="tabpanel" aria-labelledby="generate-tab">
+                        <h4>Biofouling Management Plan Configuration</h4>
+                        <div class="info-note">
+                            <p><i class="fas fa-info-circle" aria-hidden="true"></i> Review the collected information before
+                                generating your plan. Use the preview to double-check content and print/save.</p>
+                        </div>
+                        <form class="form-grid">
+                            <div class="form-group">
+                                <label for="planTitle">BFMP Document Title</label>
+                                <input type="text" id="planTitle" class="form-control" value="Biofouling Management Plan"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="documentNumber">Document Number</label>
+                                <input type="text" id="documentNumber" class="form-control" placeholder="e.g., BFMP-YYYY-XXX" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="documentRevision">Revision</label>
+                                <input type="text" id="documentRevision" class="form-control" value="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="planFormat">Document Format</label>
+                                <select id="planFormat" class="form-control" required>
+                                    <option value="Full Plan">Complete BFMP &amp; BFRB</option>
+                                    <option value="BFMP Only">BFMP Only</option>
+                                    <option value="BFRB Only">BFRB Only</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="coverPhoto">Cover Photo (Optional)</label>
+                                <input type="file" id="coverPhoto" class="form-control" accept="image/*" data-preview="cover-preview">
+                                <small class="form-text text-muted">Upload an image for the cover page (max ~5&nbsp;MB).</small>
+                                <div id="cover-preview" class="cover-preview"></div>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="companyLogo">Company Logo (Optional)</label>
+                                <input type="file" id="companyLogo" class="form-control" accept="image/*" data-preview="logo-preview">
+                                <small class="form-text text-muted">Upload a logo to show in the plan header.</small>
+                                <div id="logo-preview" class="cover-preview"></div>
+                            </div>
+                        </form>
+                        <div class="info-note">
+                            <p><i class="fas fa-info-circle" aria-hidden="true"></i> Download option is intentionally disabled for
+                                reliability. Use Preview &raquo; Print / Save as PDF.</p>
+                        </div>
+                        <div class="form-actions button-group">
+                            <button class="btn btn-secondary prev-tab" data-prev="management">Previous</button>
+                            <button id="preview-plan" class="btn btn-primary" type="button"><i class="fas fa-eye"
+                                    aria-hidden="true"></i> Preview Plan</button>
+                            <button id="generate-plan" class="btn btn-success" type="button"><i class="fas fa-download"
+                                    aria-hidden="true"></i> Download Plan (Disabled)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="plan-preview-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="preview-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="preview-title">BFMP Preview</h2>
+                <button class="modal-close" type="button" aria-label="Close preview">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="plan-preview-container"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-preview" class="btn btn-secondary" type="button">Close</button>
+                <button id="print-plan" class="btn btn-primary" type="button">Print / Save as PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-YcsIPvxLp+1EnJ1kYwI8BmfyUYy6Bhwbl0iH83mducjQB6qIkjy0JtJd5LODtTQOYsK8WwodxRUUyrb98+DPmA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./bfmp.js"></script>
+</body>
+
+</html>
+
